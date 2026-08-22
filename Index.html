@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="LinxGram — мод для UnixGram">
+  <title>LinxGram — мод для UnixGram</title>
+  <style>
+    :root{
+      --bg:#0f1110; --card:#171a18; --card2:#1c211e;
+      --text:#f2f5f3; --muted:#9ca7a0; --green:#39d77a;
+      --green2:#27b965; --border:#29302c;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;background:var(--bg);color:var(--text);
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height:1.6
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1050px,calc(100% - 32px));margin:auto}
+    header{
+      position:sticky;top:0;z-index:10;
+      background:rgba(15,17,16,.92);backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border)
+    }
+    .nav{height:68px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px}
+    .brand img{width:38px;height:38px;border-radius:10px;object-fit:cover}
+    .navlinks{display:flex;gap:20px;color:var(--muted);font-size:14px}
+    .navlinks a:hover{color:var(--text)}
+    .hero{text-align:center;padding:90px 0 70px}
+    .tag{
+      display:inline-block;padding:6px 11px;border:1px solid #31513e;
+      border-radius:999px;color:var(--green);font-size:13px;margin-bottom:18px
+    }
+    h1{font-size:clamp(42px,8vw,76px);line-height:1;margin:0 0 18px;letter-spacing:-3px}
+    .hero p{max-width:650px;margin:0 auto 30px;color:var(--muted);font-size:18px}
+    .buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:48px;padding:0 20px;border-radius:10px;font-weight:700;
+      border:1px solid var(--border);background:var(--card)
+    }
+    .btn.primary{background:var(--green);color:#07130c;border-color:var(--green)}
+    .btn.primary:hover{background:var(--green2)}
+    .btn:hover{transform:translateY(-1px)}
+    section{padding:55px 0}
+    .section-title{text-align:center;font-size:30px;margin:0 0 10px}
+    .section-sub{text-align:center;color:var(--muted);margin:0 auto 30px;max-width:650px}
+    .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .step{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:14px;padding:22px
+    }
+    .num{
+      width:34px;height:34px;border-radius:9px;background:#193d28;color:var(--green);
+      display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:14px
+    }
+    .step h3{margin:0 0 7px;font-size:18px}
+    .step p{margin:0;color:var(--muted)}
+    .note{
+      margin-top:18px;padding:18px;background:var(--card2);
+      border-left:3px solid var(--green);border-radius:8px;color:var(--muted)
+    }
+    .cta{
+      text-align:center;background:var(--card);border:1px solid var(--border);
+      border-radius:18px;padding:42px 20px
+    }
+    footer{padding:30px 0;color:var(--muted);font-size:13px;text-align:center;border-top:1px solid var(--border)}
+    @media(max-width:650px){
+      .navlinks{display:none}.hero{padding:65px 0 45px}
+      h1{letter-spacing:-2px}.hero p{font-size:16px}
+      .steps{grid-template-columns:1fr}section{padding:42px 0}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#">
+      <!-- ВСТАВЬ СЮДА ССЫЛКУ НА ИКОНКУ -->
+      <img src="https://i.postimg.cc/ZRjssLTp/file-0000000062dc820a8bbbc9a0e6f9f043.png" alt="LinxGram">
+      <span>LinxGram</span>
+    </a>
+    <nav class="navlinks">
+      <a href="#install">Установка</a>
+      <a href="#about">О моде</a>
+      <a href="htttps://t.me/LinxGram">Telegram</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="tag">Мод для UnixGram</span>
+      <h1>LinxGram</h1>
+      <p>Добавляет в UnixGram функции и улучшения, которых не хватает из коробки.</p>
+      <div class="buttons">
+        <a class="btn primary" href="ССЫЛКА_НА_СКРИПТ">Установить LinxGram</a>
+        <a class="btn" href="htttps://t.me/LinxGram">Наш Telegram</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <h2 class="section-title">Как установить</h2>
+      <p class="section-sub">Установка занимает всего несколько минут. LinxGram работает как пользовательский скрипт через Violentmonkey.</p>
+
+      <div class="steps">
+        <article class="step">
+          <div class="num">1</div>
+          <h3>Установи Violentmonkey</h3>
+          <p>Установи расширение Violentmonkey для своего браузера. Оно позволяет запускать пользовательские скрипты на сайтах.</p>
+        </article>
+
+        <article class="step">
+          <div class="num">2</div>
+          <h3>Скачай LinxGram</h3>
+          <p>Нажми кнопку «Установить LinxGram» выше или используй ссылку на файл <b>LinxGram.user.js</b>.</p>
+        </article>
+
+        <article class="step">
+          <div class="num">3</div>
+          <h3>Добавь скрипт</h3>
+          <p>После открытия файла Violentmonkey покажет страницу установки. Нажми кнопку установки скрипта.</p>
+        </article>
+
+        <article class="step">
+          <div class="num">4</div>
+          <h3>Открой UnixGram</h3>
+          <p>Перейди в UnixGram после установки. LinxGram автоматически запустится на поддерживаемой странице.</p>
+        </article>
+      </div>
+
+      <div class="note">
+        <b>Если LinxGram не появился:</b> проверь, что Violentmonkey включён, расширению разрешён запуск на сайте UnixGram, а сам скрипт включён в списке установленных скриптов.
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="cta">
+        <h2 class="section-title">LinxGram</h2>
+        <p class="section-sub">Простой пользовательский мод для UnixGram. Следи за обновлениями и новостями проекта в Telegram.</p>
+        <div class="buttons">
+          <a class="btn primary" href="ССЫЛКА_НА_СКРИПТ">Скачать LinxGram</a>
+          <a class="btn" href="htttps://t.me/LinxGram">Перейти в Telegram</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">LinxGram · мод для UnixGram</div>
+</footer>
+
+</body>
+</html>

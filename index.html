@@ -1,313 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="LinxGram — мод для UnixGram">
-  <title>LinxGram — мод для UnixGram</title>
-  <style>
-    :root{
-      --bg:#0f1110; --card:#171a18; --card2:#1c211e;
-      --text:#f2f5f3; --muted:#9ca7a0; --green:#39d77a;
-      --green2:#27b965; --border:#29302c;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;background:var(--bg);color:var(--text);
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      line-height:1.6
-    }
-    a{color:inherit;text-decoration:none}
-    .wrap{width:min(1050px,calc(100% - 32px));margin:auto}
-    header{
-      position:sticky;top:0;z-index:10;
-      background:rgba(15,17,16,.92);backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--border)
-    }
-    .nav{height:68px;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px}
-    .brand img{width:38px;height:38px;border-radius:10px;object-fit:cover}
-    .navlinks{display:flex;gap:20px;color:var(--muted);font-size:14px}
-    .navlinks a:hover{color:var(--text)}
-    .hero{text-align:center;padding:90px 0 70px}
-    .tag{
-      display:inline-block;padding:6px 11px;border:1px solid #31513e;
-      border-radius:999px;color:var(--green);font-size:13px;margin-bottom:18px
-    }
-    h1{font-size:clamp(42px,8vw,76px);line-height:1;margin:0 0 18px;letter-spacing:-3px}
-    .hero p{max-width:650px;margin:0 auto 30px;color:var(--muted);font-size:18px}
-    .buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      min-height:48px;padding:0 20px;border-radius:10px;font-weight:700;
-      border:1px solid var(--border);background:var(--card)
-    }
-    .btn.primary{background:var(--green);color:#07130c;border-color:var(--green)}
-    .btn.primary:hover{background:var(--green2)}
-    .btn:hover{transform:translateY(-1px)}
-    section{padding:55px 0}
-    .section-title{text-align:center;font-size:30px;margin:0 0 10px}
-    .section-sub{text-align:center;color:var(--muted);margin:0 auto 30px;max-width:650px}
-    .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-    .step{
-      background:var(--card);border:1px solid var(--border);
-      border-radius:14px;padding:22px
-    }
-    .num{
-      width:34px;height:34px;border-radius:9px;background:#193d28;color:var(--green);
-      display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:14px
-    }
-    .step h3{margin:0 0 7px;font-size:18px}
-    .step p{margin:0;color:var(--muted)}
-    .note{
-      margin-top:18px;padding:18px;background:var(--card2);
-      border-left:3px solid var(--green);border-radius:8px;color:var(--muted)
-    }
-    .cta{
-      text-align:center;background:var(--card);border:1px solid var(--border);
-      border-radius:18px;padding:42px 20px
-    }
-    footer{padding:30px 0;color:var(--muted);font-size:13px;text-align:center;border-top:1px solid var(--border)}
-    @media(max-width:650px){
-      .navlinks{display:none}.hero{padding:65px 0 45px}
-      h1{letter-spacing:-2px}.hero p{font-size:16px}
-      .steps{grid-template-columns:1fr}section{padding:42px 0}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LinxGram</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
-  <div class="wrap nav">
-    <a class="brand" href="#">
+    <header class="header">
+        <div class="header-brand">
+            <img
+                src="https://i.postimg.cc/ZRjssLTp/file-0000000062dc820a8bbbc9a0e6f9f043.png"
+                alt="LinxGram"
+                class="header-icon"
+            >
 
-      <img src="https://i.postimg.cc/ZRjssLTp/file-0000000062dc820a8bbbc9a0e6f9f043.png" alt="LinxGram">
-      <span>LinxGram</span>
-    </a>
-    <nav class="navlinks">
-      <a href="#install">Установка</a>
-      <a href="#about">О моде</a>
-      <a href="htttps://t.me/LinxGram">Telegram</a>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <section class="hero">
-    <div class="wrap">
-      <span class="tag">Мод для UnixGram</span>
-      <h1>LinxGram</h1>
-      <p>Добавляет в UnixGram функции и улучшения, которых не хватает из коробки.</p>
-      <div class="buttons">
-        <a class="btn primary" href="https://raw.githubusercontent.com/datteLinx/LinxGram/refs/heads/main/LinxGram.txt">Установить LinxGram</a>
-        <a class="btn" href="https://t.me/LinxGram">Наш Telegram</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="install">
-    <div class="wrap">
-      <h2 class="section-title">Как установить</h2>
-      <p class="section-sub">Установка занимает всего несколько минут. LinxGram работает как пользовательский скрипт через Violentmonkey.</p>
-
-<div class="steps">
-
-  <article class="step">
-    <div class="num">1</div>
-    <h3>Установи Violentmonkey</h3>
-
-    <p>
-      Установи расширение <b>Violentmonkey</b> в браузер.
-      Оно необходимо для запуска LinxGram.
-    </p>
-
-    <p>
-      <b>На ПК:</b> установи Violentmonkey через магазин расширений
-      своего браузера.
-    </p>
-
-    <p>
-      <b>На телефоне:</b> используй мобильный браузер, который поддерживает
-      расширения и позволяет установить Violentmonkey.
-    </p>
-
-    <p>
-      После установки убедись, что Violentmonkey включён.
-    </p>
-  </article>
-
-
-  <article class="step">
-    <div class="num">2</div>
-    <h3>Создай новый скрипт</h3>
-
-    <p>
-      Открой меню <b>Violentmonkey</b> и выбери
-      <b>«Создать новый скрипт»</b> / <b>«Create a new script»</b>.
-    </p>
-
-    <p>
-      Откроется редактор с готовым шаблоном userscript.
-      Этот шаблон нужно заменить кодом LinxGram.
-    </p>
-  </article>
-
-
-  <article class="step">
-    <div class="num">3</div>
-    <h3>Удали шаблон</h3>
-
-    <p>
-      В редакторе Violentmonkey нажми <b>Ctrl + A</b>,
-      чтобы выделить весь стандартный код.
-    </p>
-
-    <p>
-      Затем нажми <b>Backspace</b> или <b>Delete</b>.
-      Теперь редактор должен быть пустым.
-    </p>
-
-    <p>
-      <b>На телефоне:</b> выдели весь текст стандартного шаблона
-      и удали его вручную.
-    </p>
-  </article>
-
-
-  <article class="step">
-    <div class="num">4</div>
-    <h3>Скопируй код LinxGram</h3>
-
-    <p>
-      Вернись на эту страницу и нажми кнопку
-      <b>«Установить LinxGram»</b>.
-    </p>
-
-    <p>
-      Откроеться страница с кодом LinxGram.
-      <b>Не изменяй его и не удаляй отдельные строки.</b>
-    </p>
-  </article>
-
-
-  <article class="step">
-    <div class="num">5</div>
-    <h3>Вставь код в Violentmonkey</h3>
-
-    <p>
-      Вернись в редактор созданного скрипта Violentmonkey.
-    </p>
-
-    <p>
-      <b>На ПК:</b> нажми <b>Ctrl + V</b>.
-    </p>
-
-    <p>
-      <b>На телефоне:</b> зажми поле редактора и выбери
-      <b>«Вставить»</b>.
-    </p>
-
-    <p>
-      В редакторе должен появиться весь код LinxGram.
-    </p>
-  </article>
-
-
-  <article class="step">
-    <div class="num">6</div>
-    <h3>Сохрани скрипт</h3>
-
-    <p>
-      Сохрани созданный userscript.
-    </p>
-
-    <p>
-      <b>На ПК:</b> нажми <b>Ctrl + S</b> или кнопку сохранения.
-    </p>
-
-    <p>
-      <b>На телефоне:</b> используй кнопку сохранения в редакторе
-      Violentmonkey.
-    </p>
-
-    <p>
-      После сохранения проверь, что <b>LinxGram включён</b>
-      в списке установленных скриптов.
-    </p>
-  </article>
-
-
-  <article class="step">
-    <div class="num">7</div>
-    <h3>Открой UnixGram</h3>
-
-    <p>
-      Открой UnixGram в <b>том же браузере</b>, где установлен
-      Violentmonkey и сохранён LinxGram.
-    </p>
-
-    <p>
-      LinxGram автоматически запустится на поддерживаемой странице.
-    </p>
-
-    <p>
-      Если UnixGram уже был открыт во время установки,
-      просто перезагрузи страницу.
-    </p>
-  </article>
-
-
-  <article class="step">
-    <div class="num">8</div>
-    <h3>Если LinxGram не появился</h3>
-
-    <p>
-      Проверь по порядку:
-    </p>
-
-    <p>
-      <b>1.</b> Violentmonkey установлен и включён.<br>
-      <b>2.</b> LinxGram сохранён как отдельный userscript.<br>
-      <b>3.</b> LinxGram включён в Violentmonkey.<br>
-      <b>4.</b> В редактор вставлен весь код целиком.<br>
-      <b>5.</b> UnixGram открыт в том же браузере.<br>
-      <b>6.</b> Страница UnixGram была перезагружена после установки.
-    </p>
-
-    <p>
-      Если проблема осталась, открой редактор LinxGram и проверь,
-      что код не был случайно изменён или обрезан при вставке.
-    </p>
-  </article>
-
-</div>
-
-<div class="note">
-  <b>Коротко:</b><br>
-  Установи Violentmonkey → создай новый скрипт → удали шаблон →
-  скопируй код LinxGram → вставь его в редактор → сохрани →
-  открой UnixGram → готово.
-</div>
-
-
-  <section id="about">
-    <div class="wrap">
-      <div class="cta">
-        <h2 class="section-title">LinxGram</h2>
-        <p class="section-sub">Простой пользовательский мод для UnixGram. Следи за обновлениями и новостями проекта в Telegram.</p>
-        <div class="buttons">
-          <a class="btn primary" href="https://raw.githubusercontent.com/datteLinx/LinxGram/refs/heads/main/LinxGram.txt">Скачать LinxGram</a>
-          <a class="btn" href="https://t.me/LinxGram">Перейти в Telegram</a>
+            <span class="header-title">LinxGram</span>
         </div>
-      </div>
+    </header>
+
+    <section class="hero">
+    <div class="hero-content">
+
+        <h1>Модифицируй UnixGram<br>под себя.</h1>
+
+        <p>
+            LinxGram добавляет новые возможности
+            и улучшает интерфейс UnixGram.
+        </p>
+
+        <div class="hero-buttons">
+
+    <a href="https://github.com/datteLinx/LinxGram/raw/refs/heads/main/LinxGram.user.js" class="hero-button download-button">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3V15"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"/>
+            <path d="M7.5 11.5L12 16L16.5 11.5"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+            <path d="M5 20H19"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"/>
+        </svg>
+
+        <span>Скачать</span>
+    </a>
+
+    <a href="https://t.me/LinxGram" class="hero-button telegram-button">
+        <img src="https://cdn-icons-png.flaticon.com/128/16166/16166125.png" alt="Telegram">
+
+        <span>Telegram</span>
+    </a>
+
+</div>
+</section>
+<section class="safety">
+<section class="install">
+    <div class="install-header">
+        <h2>Как установить</h2>
+        <p>Скрипт работает через расширение Violentmonkey — на компьютере и телефоне</p>
     </div>
-  </section>
-</main>
 
-<footer>
-  <div class="wrap">LinxGram · мод для UnixGram</div>
-</footer>
+    <div class="install-columns">
+        <div class="install-card">
+            <div class="install-card-title">
+                <span class="install-icon">A</span>
+                <h3>На компьютере</h3>
+            </div>
+            <ol class="install-steps">
+                <li>Установите расширение <a href="#" class="install-link">Violentmonkey</a> для вашего браузера (Chrome, Firefox, Edge)</li>
+                <li>Нажмите кнопку «Скачать» на этой странице</li>
+                <li>Violentmonkey автоматически откроет окно установки скрипта</li>
+                <li>Нажмите «Установить» — готово, скрипт активен</li>
+            </ol>
+        </div>
 
-</body>
+        <div class="install-card">
+            <div class="install-card-title">
+                <span class="install-icon">B</span>
+                <h3>На телефоне</h3>
+            </div>
+            <ol class="install-steps">
+                <li>Установите браузер с поддержкой расширений (например, Kiwi Browser на Android)</li>
+                <li>В браузере установите расширение Violentmonkey из Chrome Web Store</li>
+                <li>Откройте эту страницу в этом браузере и нажмите «Скачать»</li>
+                <li>Подтвердите установку скрипта во всплывающем окне</li>
+            </ol>
+        </div>
+    </div>
+</section>
 </html>

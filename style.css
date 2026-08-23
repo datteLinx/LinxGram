@@ -270,3 +270,15 @@ body::before {
 .install-link:hover {
     text-decoration-color: #39D987;
 }
+
+.install-counter {
+    margin-top: 24px;
+    font-size: 0.95rem;
+    color: #888;
+    letter-spacing: 0.5px;
+}
+
+.install-counter strong {
+    color: #fff;
+    font-weight: 600;
+}

@@ -85,32 +85,37 @@
     </section>
 
     <script>
-        const counterApiUrl = "https://api.counterapi.dev/v1/linxgram/installs/up";
-        const countElement = document.getElementById('downloadCount');
-        const downloadBtn = document.getElementById('downloadBtn');
+    const counterApiUrl = "https://api.countapi.xyz/hit/linxgram/installs";
+    const countElement = document.getElementById('downloadCount');
+    const downloadBtn = document.getElementById('downloadBtn');
 
-        async function getStats() {
-            try {
-                const res = await fetch("https://api.counterapi.dev/v1/linxgram/installs");
-                const data = await res.json();
-                countElement.textContent = data.count || 0;
-            } catch (e) {
-                countElement.textContent = "—";
-            }
+ 
+    async function getStats() {
+        try {
+          
+            const res = await fetch("https://api.countapi.xyz/get/linxgram/installs");
+            const data = await res.json();
+            
+            countElement.textContent = data.value || 0;
+        } catch (e) {
+            countElement.textContent = "—";
         }
+    }
 
-        downloadBtn.addEventListener('click', async () => {
-            try {
-                const res = await fetch(counterApiUrl);
-                const data = await res.json();
-                countElement.textContent = data.count;
-            } catch (err) {
-                console.log("Error updating counter");
-            }
-        });
+    
+    downloadBtn.addEventListener('click', async () => {
+        try {
+            
+            const res = await fetch(counterApiUrl);
+            const data = await res.json();
+            countElement.textContent = data.value;
+        } catch (err) {
+            console.log("Не удалось обновить счетчик");
+        }
+    });
 
-        getStats();
-    </script>
+    getStats();
+</script>
 
 </body>
 </html>

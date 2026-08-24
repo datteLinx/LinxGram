@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LinxGram
 // @namespace    https://unixgram.com/dashboard
-// @version      0.2.5
+// @version      0.2.7
 // @description  Added custom fonts feature
 // @author       Noury, Datte
 // @match        https://unixgram.com/*
@@ -297,7 +297,6 @@ body.font-minecraft *:not(svg):not(.lucide):not(i) { font-family: 'Minecraft', s
 }
 
 html.n-bg-active {
-    --tg-canvas: transparent !important;
     --tg-bg: transparent !important;
 }
 
@@ -342,6 +341,7 @@ html.n-bg-active body > #n-nft-bg {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     background: #0f0f10;
     z-index: 999999;
     display: none;
@@ -355,6 +355,16 @@ html.n-bg-active body > #n-nft-bg {
 .n-panel.open {
     display: flex;
 }
+
+.n-container {
+    background: #141414;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
 
 .n-header {
     display: flex;
@@ -397,6 +407,9 @@ html.n-bg-active body > #n-nft-bg {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 0;
+    flex: 1;
+    padding-right: 12px;
 }
 
 .n-item-title {
@@ -544,6 +557,64 @@ html.n-bg-active body > #n-nft-bg {
     pointer-events: none;
     touch-action: none;
 }
+
+#linx-prof-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.px-4.pb-2.pt-4 {
+    position: relative;
+    overflow: hidden;
+}
+
+.px-4.pb-2.pt-4 > *:not(#linx-prof-bg-layer) {
+    position: relative;
+    z-index: 1;
+}
+
+.n-category-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 0.5px;
+    padding: 0 4px 8px;
+    margin-top: 24px;
+    flex-shrink: 0;
+
+.n-category-title:first-of-type {
+    margin-top: 0;
+}
+
+.n-item-expandable {
+    position: relative;
+}
+
+.n-item-expandable::after {
+    content: '⌄';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.n-item-expandable:has(.n-switch)::after {
+    right: 64px; /* Сдвигаем стрелочку влево, если есть тумблер */
+}
+
+
 `;
 
 document.head.appendChild(nStyle);
@@ -613,6 +684,71 @@ nMenuBtn.onclick = () => {
     document.getElementById('nPanel').classList.add('open');
 };
 
+
+const linxProfBgDB = new Promise((resolve) => {
+    const req = indexedDB.open('LinxProfBgDB', 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore('bg');
+    req.onsuccess = e => resolve(e.target.result);
+    req.onerror = () => resolve(null);
+});
+
+async function saveProfBg(dataUrl) {
+    const db = await linxProfBgDB;
+    if (!db) return;
+    return new Promise(res => {
+        const tx = db.transaction('bg', 'readwrite');
+        tx.objectStore('bg').put(dataUrl, 'profile_bg');
+        tx.oncomplete = () => res();
+        tx.onerror = () => res();
+    });
+}
+
+async function getProfBg() {
+    const db = await linxProfBgDB;
+    if (!db) return null;
+    return new Promise(res => {
+        const tx = db.transaction('bg');
+        const r = tx.objectStore('bg').get('profile_bg');
+        r.onsuccess = () => res(r.result);
+        r.onerror = () => res(null);
+    });
+}
+
+const profBgFileInput = document.createElement('input');
+profBgFileInput.type = 'file';
+profBgFileInput.accept = 'image/gif, image/png, image/jpeg, image/webp';
+profBgFileInput.style.display = 'none';
+document.body.appendChild(profBgFileInput);
+async function applyProfBg() {
+    const profileRoot = document.querySelector('.px-4.pb-2.pt-4');
+    if (!profileRoot) return;
+
+    let bgLayer = document.getElementById('linx-prof-bg-layer');
+    if (!bgLayer) {
+        bgLayer = document.createElement('div');
+        bgLayer.id = 'linx-prof-bg-layer';
+        profileRoot.style.position = 'relative';
+        profileRoot.style.overflow = 'hidden';
+        profileRoot.insertBefore(bgLayer, profileRoot.firstChild);
+    }
+
+    const isActive = localStorage.getItem('n_prof_bg_active') === '1';
+    const img = await getProfBg();
+
+    if (isActive && img) {
+        bgLayer.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('${img}')`;
+        bgLayer.style.display = 'block';
+    } else {
+        bgLayer.style.display = 'none';
+    }
+}
+
+
+
+const profBgObserver = new MutationObserver(() => {
+    applyProfBg();
+});
+profBgObserver.observe(document.body, { childList: true, subtree: true });
 const nObserver = new MutationObserver(() => {
     const editSpan = Array.from(
         document.querySelectorAll('span.inline-flex.items-center.justify-center.gap-2')
@@ -644,16 +780,17 @@ nPanel.innerHTML = `
         </button>
     </div>
 
+    <div class="n-category-title">Внешний вид приложения</div>
+
     <div class="n-container">
-        <div class="n-item" id="accentItem">
+        <div class="n-item" id="accentItem" title="Нажмите, чтобы развернуть настройки цвета">
             <div class="n-item-content">
                 <div class="n-text-block">
-                    <span class="n-item-title">Акцентный цвет</span>
+                    <span class="n-item-title">Акцентный цвет <span style="color: #555; font-size: 14px;">⌄</span></span>
                     <span class="n-item-desc">Цвет акцента по всему приложению</span>
                 </div>
             </div>
         </div>
-
         <div class="n-settings open" id="accentSettings">
             <div class="n-palette">
                 <input type="color" id="accentPicker" value="${getSavedAccent()}">
@@ -662,15 +799,14 @@ nPanel.innerHTML = `
     </div>
 
     <div class="n-container">
-        <div class="n-item" id="fontItem">
+        <div class="n-item" id="fontItem" title="Нажмите, чтобы выбрать шрифт">
             <div class="n-item-content">
                 <div class="n-text-block">
-                    <span class="n-item-title">Кастомный шрифт</span>
+                    <span class="n-item-title">Кастомный шрифт <span style="color: #555; font-size: 14px;">⌄</span></span>
                     <span class="n-item-desc">Изменить шрифт во всем приложении</span>
                 </div>
             </div>
         </div>
-
         <div class="n-settings" id="fontSettings">
             <div class="n-font-row">
                 <button class="n-font-btn" data-font="default">Стандарт</button>
@@ -683,16 +819,15 @@ nPanel.innerHTML = `
     </div>
 
     <div class="n-container">
-        <div class="n-item" id="bgItem">
+        <div class="n-item" id="bgItem" title="Нажмите, чтобы развернуть настройки фона">
             <div class="n-item-content">
                 <div class="n-text-block">
-                    <span class="n-item-title">Background</span>
-                    <span class="n-item-desc">Смена фона приложения</span>
+                    <span class="n-item-title">Фон приложения <span style="color: #555; font-size: 14px;">⌄</span></span>
+                    <span class="n-item-desc">Смена фона всего сайта</span>
                 </div>
                 <div class="n-switch" id="bgToggle"></div>
             </div>
         </div>
-
         <div class="n-settings" id="bgSettings">
             <div class="n-palette">
                 <div class="n-circle n-add-circle" id="bgUpload" title="Загрузить с устройства">
@@ -702,45 +837,75 @@ nPanel.innerHTML = `
                         <path d="M12 3v12"></path>
                     </svg>
                 </div>
-
                 <div class="n-circle n-add-circle" id="bgAdd" title="По ссылке">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12h14"></path>
                         <path d="M12 5v14"></path>
                     </svg>
                 </div>
-
                 <div class="n-circle" style="background: #E8455F;" data-color="linear-gradient(rgb(232, 69, 95), rgb(122, 15, 38))"></div>
                 <div class="n-circle" style="background: #4D5254;" data-color="linear-gradient(rgb(77, 82, 84), rgb(49, 54, 56))"></div>
                 <div class="n-circle" style="background: #00ff00;" data-color="linear-gradient(rgb(0,255,0), rgb(0,100,0))"></div>
                 <div class="n-circle" style="background: #4a9eff;" data-color="linear-gradient(rgb(74,158,255), rgb(0,50,100))"></div>
-
                 <img id="n-bg-preview" style="display:none;">
             </div>
-
             <input type="file" id="bgFileInput" accept="image/png, image/jpeg, image/webp" hidden>
         </div>
+    </div>
 
-        <div class="n-item" id="nickItem">
+    <div class="n-category-title">Персонализация профиля</div>
+
+    <div class="n-container">
+        <div class="n-item" id="profBgItem" title="Нажмите, чтобы загрузить картинку на фон профиля">
             <div class="n-item-content">
                 <div class="n-text-block">
-                    <span class="n-item-title">Color Nickname</span>
+                    <span class="n-item-title">Фон профиля <span style="color: #555; font-size: 14px;">⌄</span></span>
+                    <span class="n-item-desc">Загрузить картинку</span>
+                </div>
+                <div class="n-switch" id="profBgToggle"></div>
+            </div>
+        </div>
+        <div class="n-settings" id="profBgSettings">
+            <div class="n-palette">
+                <div class="n-circle n-add-circle" id="profBgUpload" title="Загрузить с устройства">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <path d="M17 8l-5-5-5 5"></path>
+                        <path d="M12 3v12"></path>
+                    </svg>
+                </div>
+                <div class="n-circle n-add-circle" id="profBgClear" title="Удалить фон" style="background: #E8455F; border-color: #E8455F;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="n-container">
+        <div class="n-item" id="nickItem" title="Нажмите, чтобы настроить цвет ника">
+            <div class="n-item-content">
+                <div class="n-text-block">
+                    <span class="n-item-title">Color Nickname <span style="color: #555; font-size: 14px;">⌄</span></span>
                     <span class="n-item-desc">Цветной ник + бейдж</span>
                 </div>
                 <div class="n-switch" id="nickToggle"></div>
             </div>
         </div>
-
         <div class="n-settings" id="nickSettings">
             <input type="text" class="n-text-input" id="nickInput" placeholder="Ваш никнейм">
-
             <div class="n-color-row">
                 <input type="color" id="nickColor1" value="#4caf50">
                 <input type="color" id="nickColor2" value="#ffffff">
             </div>
         </div>
+    </div>
 
-        <div class="n-item" id="starItem">
+    <div class="n-container">
+        <div class="n-item" id="starItem" title="Включить звезду рядом с ником">
             <div class="n-item-content">
                 <div class="n-text-block">
                     <span class="n-item-title">Visual Premium</span>
@@ -749,8 +914,12 @@ nPanel.innerHTML = `
                 <div class="n-switch" id="starToggle"></div>
             </div>
         </div>
+    </div>
 
-        <div class="n-item" id="cubItem">
+    <div class="n-category-title">Развлечения и Эффекты</div>
+
+    <div class="n-container">
+        <div class="n-item" id="cubItem" title="Включить интерактивные кубы">
             <div class="n-item-content">
                 <div class="n-text-block">
                     <span class="n-item-title">Visual Cub</span>
@@ -761,8 +930,10 @@ nPanel.innerHTML = `
         </div>
     </div>
 
+    <div class="n-category-title">Система</div>
+
     <div class="n-container">
-        <div class="n-item" style="cursor: default;">
+        <div class="n-item" id="optItem" title="Включить оптимизацию страницы">
             <div class="n-item-content">
                 <div class="n-text-block">
                     <span class="n-item-title">Optimization</span>
@@ -773,8 +944,45 @@ nPanel.innerHTML = `
         </div>
     </div>
 `;
-
 document.body.appendChild(nPanel);
+
+  document.getElementById('profBgToggle').onclick = function(e) {
+    e.stopPropagation();
+    this.classList.toggle('active');
+    const isActive = this.classList.contains('active');
+    localStorage.setItem('n_prof_bg_active', isActive ? '1' : '0');
+    applyProfBg();
+};
+
+document.getElementById('profBgUpload').onclick = function(e) {
+    e.stopPropagation();
+    profBgFileInput.click();
+};
+
+profBgFileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+        await saveProfBg(ev.target.result);
+        const toggle = document.getElementById('profBgToggle');
+        if (!toggle.classList.contains('active')) {
+            toggle.classList.add('active');
+            localStorage.setItem('n_prof_bg_active', '1');
+        }
+        applyProfBg();
+    };
+    reader.readAsDataURL(file);
+});
+
+document.getElementById('profBgClear').onclick = async function(e) {
+    e.stopPropagation();
+    await saveProfBg('');
+    const toggle = document.getElementById('profBgToggle');
+    toggle.classList.remove('active');
+    localStorage.setItem('n_prof_bg_active', '0');
+    applyProfBg();
+};
 
 document.getElementById('nBackBtn').addEventListener('click', () => {
     nPanel.classList.remove('open');
@@ -822,10 +1030,51 @@ document.querySelectorAll('.n-font-btn').forEach(btn => {
     });
 });
 
-document.getElementById('optToggle').onclick = e => {
-    e.stopPropagation();
-};
+function applyOptimization(isActive) {
+    let optCss = document.getElementById('linx-opt-css');
 
+    if (isActive) {
+        if (!optCss) {
+            optCss = document.createElement('style');
+            optCss.id = 'linx-opt-css';
+
+            optCss.textContent = `
+
+                * {
+                    backdrop-filter: none !important;
+                    -webkit-backdrop-filter: none !important;
+                }
+
+
+                [style*="blur"] {
+                    filter: none !important;
+                    -webkit-filter: none !important;
+                }
+
+
+                .animate-pulse, .animate-spin, [class*="animate-"] {
+                    animation: none !important;
+                }
+
+
+                * {
+                    box-shadow: none !important;
+                }
+            `;
+            document.head.appendChild(optCss);
+        }
+    } else {
+        if (optCss) optCss.remove();
+    }
+}
+
+document.getElementById('optToggle').onclick = function(e) {
+    e.stopPropagation();
+    this.classList.toggle('active');
+    const isActive = this.classList.contains('active');
+    localStorage.setItem('n_opt_active', isActive ? '1' : '0');
+    applyOptimization(isActive);
+};
 document.getElementById('accentPicker').addEventListener('input', e => {
     applyAccent(e.target.value);
 });
@@ -1411,10 +1660,30 @@ document.getElementById('cubToggle').onclick = async function(e) {
     }
 };
 
+
+
+const sideObs = new MutationObserver(linxSidebarScroll);
+sideObs.observe(document.body, { childList: true, subtree: true });
+linxSidebarScroll();
+
 async function restoreState() {
     loadNickSettings();
     applyNickFx();
     applyFont(getSavedFont());
+
+
+    const optActive = localStorage.getItem('n_opt_active') === '1';
+    if (optActive) {
+        document.getElementById('optToggle').classList.add('active');
+        applyOptimization(true);
+    }
+
+
+    const profBgActive = localStorage.getItem('n_prof_bg_active') === '1';
+    if (profBgActive) {
+        document.getElementById('profBgToggle').classList.add('active');
+        applyProfBg();
+    }
 
     const bgActive = localStorage.getItem('n_bg_active') === '1';
     const savedValue = localStorage.getItem('n_bg_value');
@@ -1422,20 +1691,13 @@ async function restoreState() {
 
     if (savedImage) {
         actBgColor = `url(${savedImage}) center/cover no-repeat`;
-
         const preview = document.getElementById('n-bg-preview');
-
         preview.src = savedImage;
         preview.style.display = 'block';
     } else if (savedValue && savedValue !== 'image') {
         actBgColor = savedValue;
-
-        document.querySelectorAll(
-            '#bgSettings .n-circle:not(.n-add-circle)'
-        ).forEach(c => {
-            if (c.dataset.color === savedValue) {
-                c.classList.add('selected');
-            }
+        document.querySelectorAll('#bgSettings .n-circle:not(.n-add-circle)').forEach(c => {
+            if (c.dataset.color === savedValue) c.classList.add('selected');
         });
     }
 
@@ -1445,7 +1707,6 @@ async function restoreState() {
         showBg();
     }
 }
-
 setTimeout(() => {
     restoreState();
 }, 1000);

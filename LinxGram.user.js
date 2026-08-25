@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         LinxGram
 // @namespace    https://unixgram.com/dashboard
-// @version      0.2.7
-// @description  Added custom fonts feature
+// @version      0.3
+// @description  BugFix
 // @author       Noury, Datte
 // @match        https://unixgram.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=unixgram.com
@@ -17,13 +17,13 @@ if (window.__linxGramInjected) {
 }
 window.__linxGramInjected = true;
 
-function hexToRgb(hex) {
+function получитьRgb(hex) {
     const h = hex.replace('#', '');
     const bigint = parseInt(h, 16);
     return `${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${bigint & 255}`;
 }
 
-function lighten(hex, amount) {
+function осветлить(hex, amount) {
     const h = hex.replace('#', '');
     const num = parseInt(h, 16);
     let r = Math.min(255, Math.max(0, (num >> 16) + amount));
@@ -32,9 +32,9 @@ function lighten(hex, amount) {
     return '#' + (0x1000000 + r * 0x10000 + g * 0x100 + b).toString(16).slice(1);
 }
 
-function applyAccent(hex) {
-    const light = lighten(hex, 25);
-    const rgb = hexToRgb(hex);
+function применитьАкцент(hex) {
+    const light = осветлить(hex, 25);
+    const rgb = получитьRgb(hex);
 
     let accentStyle = document.getElementById('n-accent-vars');
 
@@ -118,11 +118,11 @@ function applyAccent(hex) {
     localStorage.setItem('n_accent', hex);
 }
 
-function getSavedAccent() {
+function получитьСохраненныйАкцент() {
     return localStorage.getItem('n_accent') || '#E8D4B0';
 }
 
-function applyFont(fontClass) {
+function применитьШрифт(fontClass) {
     document.body.classList.remove('font-pacifico', 'font-bebas', 'font-mono', 'font-minecraft');
     if (fontClass !== 'default') {
         document.body.classList.add(`font-${fontClass}`);
@@ -134,7 +134,7 @@ function applyFont(fontClass) {
     });
 }
 
-function getSavedFont() {
+function получитьСохраненныйШрифт() {
     return localStorage.getItem('n_font') || 'default';
 }
 
@@ -365,7 +365,6 @@ html.n-bg-active body > #n-nft-bg {
     flex-shrink: 0;
 }
 
-
 .n-header {
     display: flex;
     align-items: center;
@@ -385,14 +384,6 @@ html.n-bg-active body > #n-nft-bg {
 .n-back-btn svg {
     width: 24px;
     height: 24px;
-}
-
-.n-container {
-    background: #141414;
-    border-radius: 20px;
-    overflow: hidden;
-    position: relative;
-    margin-bottom: 20px;
 }
 
 .n-item-content {
@@ -589,7 +580,7 @@ html.n-bg-active body > #n-nft-bg {
     letter-spacing: 0.5px;
     padding: 0 4px 8px;
     margin-top: 24px;
-    flex-shrink: 0;
+}
 
 .n-category-title:first-of-type {
     margin-top: 0;
@@ -611,16 +602,14 @@ html.n-bg-active body > #n-nft-bg {
 }
 
 .n-item-expandable:has(.n-switch)::after {
-    right: 64px; /* Сдвигаем стрелочку влево, если есть тумблер */
+    right: 64px;
 }
-
-
 `;
 
 document.head.appendChild(nStyle);
 
-applyAccent(getSavedAccent());
-applyFont(getSavedFont());
+применитьАкцент(получитьСохраненныйАкцент());
+применитьШрифт(получитьСохраненныйШрифт());
 
 const dbPromise = new Promise((resolve) => {
     const req = indexedDB.open('LinxGramDB', 1);
@@ -633,7 +622,7 @@ const dbPromise = new Promise((resolve) => {
     req.onerror = () => resolve(null);
 });
 
-async function saveImage(key, dataUrl) {
+async function сохранитьКартинку(key, dataUrl) {
     const db = await dbPromise;
 
     if (!db) return;
@@ -646,7 +635,7 @@ async function saveImage(key, dataUrl) {
     });
 }
 
-async function getImage(key) {
+async function получитьКартинку(key) {
     const db = await dbPromise;
 
     if (!db) return null;
@@ -684,7 +673,6 @@ nMenuBtn.onclick = () => {
     document.getElementById('nPanel').classList.add('open');
 };
 
-
 const linxProfBgDB = new Promise((resolve) => {
     const req = indexedDB.open('LinxProfBgDB', 1);
     req.onupgradeneeded = e => e.target.result.createObjectStore('bg');
@@ -692,7 +680,7 @@ const linxProfBgDB = new Promise((resolve) => {
     req.onerror = () => resolve(null);
 });
 
-async function saveProfBg(dataUrl) {
+async function сохранитьФонПрофиля(dataUrl) {
     const db = await linxProfBgDB;
     if (!db) return;
     return new Promise(res => {
@@ -703,7 +691,7 @@ async function saveProfBg(dataUrl) {
     });
 }
 
-async function getProfBg() {
+async function получитьФонПрофиля() {
     const db = await linxProfBgDB;
     if (!db) return null;
     return new Promise(res => {
@@ -719,7 +707,8 @@ profBgFileInput.type = 'file';
 profBgFileInput.accept = 'image/gif, image/png, image/jpeg, image/webp';
 profBgFileInput.style.display = 'none';
 document.body.appendChild(profBgFileInput);
-async function applyProfBg() {
+
+async function применитьФонПрофиля() {
     const profileRoot = document.querySelector('.px-4.pb-2.pt-4');
     if (!profileRoot) return;
 
@@ -733,7 +722,7 @@ async function applyProfBg() {
     }
 
     const isActive = localStorage.getItem('n_prof_bg_active') === '1';
-    const img = await getProfBg();
+    const img = await получитьФонПрофиля();
 
     if (isActive && img) {
         bgLayer.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('${img}')`;
@@ -743,12 +732,11 @@ async function applyProfBg() {
     }
 }
 
-
-
 const profBgObserver = new MutationObserver(() => {
-    applyProfBg();
+    применитьФонПрофиля();
 });
 profBgObserver.observe(document.body, { childList: true, subtree: true });
+
 const nObserver = new MutationObserver(() => {
     const editSpan = Array.from(
         document.querySelectorAll('span.inline-flex.items-center.justify-center.gap-2')
@@ -793,7 +781,7 @@ nPanel.innerHTML = `
         </div>
         <div class="n-settings open" id="accentSettings">
             <div class="n-palette">
-                <input type="color" id="accentPicker" value="${getSavedAccent()}">
+                <input type="color" id="accentPicker" value="${получитьСохраненныйАкцент()}">
             </div>
         </div>
     </div>
@@ -885,21 +873,48 @@ nPanel.innerHTML = `
         </div>
     </div>
 
+    <div class="n-category-title">Ник</div>
+
     <div class="n-container">
-        <div class="n-item" id="nickItem" title="Нажмите, чтобы настроить цвет ника">
+        <div class="n-item" id="nickInputItem" title="Никнейм, к которому применяются эффекты">
             <div class="n-item-content">
                 <div class="n-text-block">
-                    <span class="n-item-title">Color Nickname <span style="color: #555; font-size: 14px;">⌄</span></span>
-                    <span class="n-item-desc">Цветной ник + бейдж</span>
+                    <span class="n-item-title">Ввод ника <span style="color: #555; font-size: 14px;">⌄</span></span>
+                    <span class="n-item-desc">Никнейм для применения эффектов</span>
+                </div>
+            </div>
+        </div>
+        <div class="n-settings open" id="nickInputSettings">
+            <input type="text" class="n-text-input" id="nickInput" placeholder="Ваш никнейм" style="margin-bottom: 0;">
+        </div>
+    </div>
+
+    <div class="n-container">
+        <div class="n-item" id="nickColorItem" title="Нажмите, чтобы настроить цвет ника">
+            <div class="n-item-content">
+                <div class="n-text-block">
+                    <span class="n-item-title">Цветной ник <span style="color: #555; font-size: 14px;">⌄</span></span>
+                    <span class="n-item-desc">Градиентный цвет никнейма</span>
                 </div>
                 <div class="n-switch" id="nickToggle"></div>
             </div>
         </div>
-        <div class="n-settings" id="nickSettings">
-            <input type="text" class="n-text-input" id="nickInput" placeholder="Ваш никнейм">
+        <div class="n-settings" id="nickColorSettings">
             <div class="n-color-row">
                 <input type="color" id="nickColor1" value="#4caf50">
                 <input type="color" id="nickColor2" value="#ffffff">
+            </div>
+        </div>
+    </div>
+
+    <div class="n-container">
+        <div class="n-item" id="badgeItem" title="Включить значок рядом с ником">
+            <div class="n-item-content">
+                <div class="n-text-block">
+                    <span class="n-item-title">Бейдж</span>
+                    <span class="n-item-desc">Значок рядом с ником</span>
+                </div>
+                <div class="n-switch" id="badgeToggle"></div>
             </div>
         </div>
     </div>
@@ -946,12 +961,12 @@ nPanel.innerHTML = `
 `;
 document.body.appendChild(nPanel);
 
-  document.getElementById('profBgToggle').onclick = function(e) {
+document.getElementById('profBgToggle').onclick = function(e) {
     e.stopPropagation();
     this.classList.toggle('active');
     const isActive = this.classList.contains('active');
     localStorage.setItem('n_prof_bg_active', isActive ? '1' : '0');
-    applyProfBg();
+    применитьФонПрофиля();
 };
 
 document.getElementById('profBgUpload').onclick = function(e) {
@@ -964,24 +979,24 @@ profBgFileInput.addEventListener('change', async (e) => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = async (ev) => {
-        await saveProfBg(ev.target.result);
+        await сохранитьФонПрофиля(ev.target.result);
         const toggle = document.getElementById('profBgToggle');
         if (!toggle.classList.contains('active')) {
             toggle.classList.add('active');
             localStorage.setItem('n_prof_bg_active', '1');
         }
-        applyProfBg();
+        применитьФонПрофиля();
     };
     reader.readAsDataURL(file);
 });
 
 document.getElementById('profBgClear').onclick = async function(e) {
     e.stopPropagation();
-    await saveProfBg('');
+    await сохранитьФонПрофиля('');
     const toggle = document.getElementById('profBgToggle');
     toggle.classList.remove('active');
     localStorage.setItem('n_prof_bg_active', '0');
-    applyProfBg();
+    применитьФонПрофиля();
 };
 
 document.getElementById('nBackBtn').addEventListener('click', () => {
@@ -1026,11 +1041,20 @@ document.querySelectorAll('.n-item').forEach(item => {
 document.querySelectorAll('.n-font-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        applyFont(btn.dataset.font);
+        применитьШрифт(btn.dataset.font);
     });
 });
 
-function applyOptimization(isActive) {
+let optImgObserver = null;
+
+function лениваяЗагрузкаКартинок() {
+    document.querySelectorAll('img:not([loading])').forEach(img => {
+        img.loading = 'lazy';
+        img.decoding = 'async';
+    });
+}
+
+function применитьОптимизацию(isActive) {
     let optCss = document.getElementById('linx-opt-css');
 
     if (isActive) {
@@ -1039,23 +1063,21 @@ function applyOptimization(isActive) {
             optCss.id = 'linx-opt-css';
 
             optCss.textContent = `
-
                 * {
                     backdrop-filter: none !important;
                     -webkit-backdrop-filter: none !important;
+                    transition: none !important;
+                    will-change: auto !important;
                 }
-
 
                 [style*="blur"] {
                     filter: none !important;
                     -webkit-filter: none !important;
                 }
 
-
                 .animate-pulse, .animate-spin, [class*="animate-"] {
                     animation: none !important;
                 }
-
 
                 * {
                     box-shadow: none !important;
@@ -1063,8 +1085,20 @@ function applyOptimization(isActive) {
             `;
             document.head.appendChild(optCss);
         }
+
+        лениваяЗагрузкаКартинок();
+
+        if (!optImgObserver) {
+            optImgObserver = new MutationObserver(лениваяЗагрузкаКартинок);
+            optImgObserver.observe(document.body, { childList: true, subtree: true });
+        }
     } else {
         if (optCss) optCss.remove();
+
+        if (optImgObserver) {
+            optImgObserver.disconnect();
+            optImgObserver = null;
+        }
     }
 }
 
@@ -1073,15 +1107,16 @@ document.getElementById('optToggle').onclick = function(e) {
     this.classList.toggle('active');
     const isActive = this.classList.contains('active');
     localStorage.setItem('n_opt_active', isActive ? '1' : '0');
-    applyOptimization(isActive);
+    применитьОптимизацию(isActive);
 };
+
 document.getElementById('accentPicker').addEventListener('input', e => {
-    applyAccent(e.target.value);
+    применитьАкцент(e.target.value);
 });
 
 let actBgColor = 'linear-gradient(rgb(232, 69, 95), rgb(122, 15, 38))';
 
-function showBg() {
+function показатьФон() {
     let nBg = document.getElementById('n-nft-bg');
 
     if (!nBg) {
@@ -1109,7 +1144,7 @@ document.getElementById('bgToggle').onclick = function(e) {
     localStorage.setItem('n_bg_active', isAct ? '1' : '0');
 
     if (isAct) {
-        showBg();
+        показатьФон();
     } else {
         const nBg = document.getElementById('n-nft-bg');
 
@@ -1137,7 +1172,7 @@ document.querySelectorAll('#bgSettings .n-circle:not(.n-add-circle)').forEach(ci
         const toggle = document.getElementById('bgToggle');
 
         if (toggle.classList.contains('active')) {
-            showBg();
+            показатьФон();
         }
     };
 });
@@ -1168,7 +1203,7 @@ document.getElementById('urlConfirm').onclick = function() {
             localStorage.setItem('n_bg_active', '1');
         }
 
-        showBg();
+        показатьФон();
 
         document.getElementById('nUrlPopup').classList.remove('open');
     }
@@ -1191,7 +1226,7 @@ bgFileInput.addEventListener('change', e => {
     reader.onload = async ev => {
         const dataUrl = ev.target.result;
 
-        await saveImage('n_bg_image', dataUrl);
+        await сохранитьКартинку('n_bg_image', dataUrl);
 
         actBgColor = `url(${dataUrl}) center/cover no-repeat`;
 
@@ -1214,7 +1249,7 @@ bgFileInput.addEventListener('change', e => {
             localStorage.setItem('n_bg_active', '1');
         }
 
-        showBg();
+        показатьФон();
     };
 
     reader.readAsDataURL(file);
@@ -1223,35 +1258,43 @@ bgFileInput.addEventListener('change', e => {
 document.getElementById('nickToggle').onclick = function(e) {
     e.stopPropagation();
     this.classList.toggle('active');
-    saveNickSettings();
-    applyNickFx();
+    сохранитьНастройкиНика();
+    применитьЭффектыНика();
+};
+
+document.getElementById('badgeToggle').onclick = function(e) {
+    e.stopPropagation();
+    this.classList.toggle('active');
+    сохранитьНастройкиНика();
+    применитьЭффектыНика();
 };
 
 document.getElementById('starToggle').onclick = function(e) {
     e.stopPropagation();
     this.classList.toggle('active');
-    saveNickSettings();
-    applyNickFx();
+    сохранитьНастройкиНика();
+    применитьЭффектыНика();
 };
 
 document.getElementById('nickInput').addEventListener('input', () => {
-    saveNickSettings();
-    applyNickFx();
+    сохранитьНастройкиНика();
+    применитьЭффектыНика();
 });
 
 document.getElementById('nickColor1').addEventListener('input', () => {
-    saveNickSettings();
-    applyNickFx();
+    сохранитьНастройкиНика();
+    применитьЭффектыНика();
 });
 
 document.getElementById('nickColor2').addEventListener('input', () => {
-    saveNickSettings();
-    applyNickFx();
+    сохранитьНастройкиНика();
+    применитьЭффектыНика();
 });
 
-function saveNickSettings() {
+function сохранитьНастройкиНика() {
     const s = {
         colorEnabled: document.getElementById('nickToggle').classList.contains('active'),
+        badgeEnabled: document.getElementById('badgeToggle').classList.contains('active'),
         starEnabled: document.getElementById('starToggle').classList.contains('active'),
         nick: document.getElementById('nickInput').value.trim(),
         c1: document.getElementById('nickColor1').value,
@@ -1261,7 +1304,7 @@ function saveNickSettings() {
     localStorage.setItem('n_nick_settings', JSON.stringify(s));
 }
 
-function loadNickSettings() {
+function загрузитьНастройкиНика() {
     const s = JSON.parse(localStorage.getItem('n_nick_settings') || '{}');
 
     document.getElementById('nickInput').value = s.nick || '';
@@ -1272,16 +1315,20 @@ function loadNickSettings() {
         document.getElementById('nickToggle').classList.add('active');
     }
 
+    if (s.badgeEnabled) {
+        document.getElementById('badgeToggle').classList.add('active');
+    }
+
     if (s.starEnabled) {
         document.getElementById('starToggle').classList.add('active');
     }
 }
 
-function starSvg(color) {
+function иконкаЗвезды(color) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="n-fake-star"><path fill="${color}" fill-rule="evenodd" clip-rule="evenodd" d="m11.466 17.753-4.5 2.758a.994.994 0 0 1-1.483-1.093l.697-2.742a3.448 3.448 0 0 1 1.85-2.26l4.91-2.357a.46.46 0 0 0-.278-.867l-5.465.946a3.831 3.831 0 0 1-3.115-.839L2.355 9.852A.994.994 0 0 1 2.916 8.1l5.276-.413a.994.994 0 0 0 .84-.61l2.035-4.913a.994.994 0 0 1 1.837 0l2.035 4.912a.994.994 0 0 0 .84.61l5.305.416a.994.994 0 0 1 .567 1.747l-4.046 3.449a.994.994 0 0 0-.321.989l1.244 5.166a.994.994 0 0 1-1.486 1.08l-4.537-2.78a.994.994 0 0 0-1.039 0Z"></path></svg>`;
 }
 
-function applyNickFx() {
+function применитьЭффектыНика() {
     const s = JSON.parse(localStorage.getItem('n_nick_settings') || '{}');
 
     const els = document.querySelectorAll(
@@ -1316,7 +1363,7 @@ function applyNickFx() {
             )
             : null;
 
-        if (isMatch) {
+        if (isMatch && s.badgeEnabled) {
             if (!badge) {
                 const newBadge = document.createElement('img');
 
@@ -1348,7 +1395,7 @@ function applyNickFx() {
                     path.setAttribute('fill', starColor);
                 }
             } else {
-                el.insertAdjacentHTML('afterend', starSvg(starColor));
+                el.insertAdjacentHTML('afterend', иконкаЗвезды(starColor));
             }
 
             el.dataset.linxStar = 'true';
@@ -1368,7 +1415,7 @@ const nickObs = new MutationObserver(() => {
     clearTimeout(nickTimer);
 
     nickTimer = setTimeout(() => {
-        applyNickFx();
+        применитьЭффектыНика();
     }, 100);
 });
 
@@ -1660,34 +1707,26 @@ document.getElementById('cubToggle').onclick = async function(e) {
     }
 };
 
-
-
-const sideObs = new MutationObserver(linxSidebarScroll);
-sideObs.observe(document.body, { childList: true, subtree: true });
-linxSidebarScroll();
-
-async function restoreState() {
-    loadNickSettings();
-    applyNickFx();
-    applyFont(getSavedFont());
-
+async function восстановитьСостояние() {
+    загрузитьНастройкиНика();
+    применитьЭффектыНика();
+    применитьШрифт(получитьСохраненныйШрифт());
 
     const optActive = localStorage.getItem('n_opt_active') === '1';
     if (optActive) {
         document.getElementById('optToggle').classList.add('active');
-        applyOptimization(true);
+        применитьОптимизацию(true);
     }
-
 
     const profBgActive = localStorage.getItem('n_prof_bg_active') === '1';
     if (profBgActive) {
         document.getElementById('profBgToggle').classList.add('active');
-        applyProfBg();
+        применитьФонПрофиля();
     }
 
     const bgActive = localStorage.getItem('n_bg_active') === '1';
     const savedValue = localStorage.getItem('n_bg_value');
-    const savedImage = await getImage('n_bg_image');
+    const savedImage = await получитьКартинку('n_bg_image');
 
     if (savedImage) {
         actBgColor = `url(${savedImage}) center/cover no-repeat`;
@@ -1704,11 +1743,12 @@ async function restoreState() {
     if (bgActive) {
         document.getElementById('bgToggle').classList.add('active');
         document.documentElement.classList.add('n-bg-active');
-        showBg();
+        показатьФон();
     }
 }
+
 setTimeout(() => {
-    restoreState();
+    восстановитьСостояние();
 }, 1000);
 
 })();

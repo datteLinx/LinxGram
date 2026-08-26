@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         LinxGram
 // @namespace    https://unixgram.com/dashboard
-// @version      0.3.2
-// @description  
+// @version      0.3.3
+// @description
 // @author       Noury, Datte
 // @match        https://unixgram.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=unixgram.com
@@ -552,7 +552,7 @@ nPanel.innerHTML = `
                 <img src="https://i.postimg.cc/ZRjssLTp/file-0000000062dc820a8bbbc9a0e6f9f043.png" alt="LinxGram">
             </div>
             <div class="n-profile-name">LinxGram</div>
-            <div class="n-profile-status">Модификация UnixGram • v0.3.2</div>
+            <div class="n-profile-status">Модификация UnixGram • v0.3.3</div>
         </div>
 
         <div class="n-category-title">Внешний вид</div>
@@ -662,9 +662,9 @@ nPanel.innerHTML = `
     </div>
 
     <div class="n-view" data-view="nick">
-        <div class="n-category-title">Никнейм</div>
+                <div class="n-category-title">Никнейм</div>
         <div class="n-settings" style="margin-top:0;">
-            <input type="text" class="n-text-input" id="nickInput" placeholder="Ваш никнейм" style="margin-bottom: 0;">
+            <input type="text" class="n-text-input" id="nickInput" placeholder="Загрузка..." style="margin-bottom: 0;" disabled readonly>
         </div>
 
         <div class="n-category-title">Эффекты</div>
@@ -789,6 +789,29 @@ function loadNickSettings() {
         document.getElementById('starToggle').classList.add('active');
     }
 }
+
+let linxOrigNick = null;
+
+function fetchLinxOrigNick() {
+    if (linxOrigNick) return;
+    fetch('/api/auth/me', { credentials: 'include', headers: { 'Accept': 'application/json' } })
+        .then(r => r.json())
+        .then(j => {
+            const acc = j && j.data && (j.data.account || j.data) || null;
+            if (acc && (acc.displayName || acc.username)) {
+                linxOrigNick = acc.displayName || acc.username;
+                const inp = document.getElementById('nickInput');
+                if (inp) {
+                    inp.value = linxOrigNick;
+                    saveNickSettings();
+                    applyNickEffects();
+                }
+            }
+        })
+        .catch(() => {});
+}
+
+setInterval(fetchLinxOrigNick, 3000);
 
 function starIcon(color) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="n-fake-star"><path fill="${color}" fill-rule="evenodd" clip-rule="evenodd" d="m11.466 17.753-4.5 2.758a.994.994 0 0 1-1.483-1.093l.697-2.742a3.448 3.448 0 0 1 1.85-2.26l4.91-2.357a.46.46 0 0 0-.278-.867l-5.465.946a3.831 3.831 0 0 1-3.115-.839L2.355 9.852A.994.994 0 0 1 2.916 8.1l5.276-.413a.994.994 0 0 0 .84-.61l2.035-4.913a.994.994 0 0 1 1.837 0l2.035 4.912a.994.994 0 0 0 .84.61l5.305.416a.994.994 0 0 1 .567 1.747l-4.046 3.449a.994.994 0 0 0-.321.989l1.244 5.166a.994.994 0 0 1-1.486 1.08l-4.537-2.78a.994.994 0 0 0-1.039 0Z"></path></svg>`;
@@ -1318,6 +1341,6 @@ function restoreSettings() {
 setTimeout(() => {
     initLinxGramEvents();
     restoreSettings();
+    fetchLinxOrigNick();
 }, 1000);
-
 })();

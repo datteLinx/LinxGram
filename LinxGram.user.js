@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LinxGram
 // @namespace    https://unixgram.com/dashboard
-// @version      0.3.4
+// @version      0.3.2
 // @description
 // @author       Datte
 // @match        https://unixgram.com/*
@@ -462,7 +462,7 @@ const nObserver = new MutationObserver(() => {
 
     if (editSpan && !document.getElementById('nMenuBtn')) {
         const parentBtn = editSpan.closest('button') || editSpan;
-        // Вставляем строго после кнопки редактирования
+
         parentBtn.insertAdjacentElement('afterend', nMenuBtn);
     }
 });
@@ -866,7 +866,7 @@ function applyNickEffects() {
             delete el.dataset.linxStar;
         }
 
-        // --- Логика анонимного номера ---
+
         let existingAnonBtn = document.querySelector('.n-anon-btn');
 
         if (isMatch && s.anonEnabled) {

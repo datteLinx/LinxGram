@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         LinxGram
 // @namespace    https://unixgram.com/dashboard
-// @version      0.3.3
+// @version      0.3.4
 // @description
-// @author       Noury, Datte
+// @author       Datte
 // @match        https://unixgram.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=unixgram.com
 // @grant        none
@@ -151,15 +151,16 @@ body.font-minecraft *:not(svg):not(.lucide):not(i) { font-family: 'Minecraft', s
 
 .n-font-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 .n-font-btn {
-    padding: 8px 12px; background: #232e3c; border: 1px solid #3b4a57; border-radius: 8px;
+    padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
     color: #ccc; cursor: pointer; font-size: 13px; transition: all 0.2s; flex: 1; text-align: center;
 }
-.n-font-btn:hover { background: #2b3a47; color: #fff; }
+.n-font-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .n-font-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: bold; }
 
 .n-panel {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
-    background: #0f0f10; z-index: 999999; display: none;
+    background: #000000;
+    z-index: 999999; display: none;
     color: #fff; overflow-y: auto; overflow-x: hidden;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
@@ -168,96 +169,95 @@ body.font-minecraft *:not(svg):not(.lucide):not(i) { font-family: 'Minecraft', s
     .n-panel {
         top: 50%; left: 50%; transform: translate(-50%, -50%);
         width: 420px; height: 85vh; max-height: 800px;
-        border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.1);
     }
 }
+
 .n-header {
     position: sticky; top: 0; z-index: 100;
-    height: 56px; min-height: 56px; display: flex; align-items: center; padding: 0 12px;
-    background: #0f0f10; border-bottom: 1px solid #1c1c1c;
-}
-
+    height: 60px; min-height: 60px; display: flex; align-items: center; padding: 0 16px;
+    background: rgba(8, 8, 10, 0.6); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 .n-back-btn {
-    background: none; border: none; color: #fff; cursor: pointer; display: none;
-    align-items: center; padding: 8px; border-radius: 50%; transition: background 0.2s;
+    background: rgba(255,255,255,0.05); border: none; color: #fff; cursor: pointer; display: none;
+    align-items: center; padding: 8px; border-radius: 50%; transition: all 0.2s;
 }
 .n-back-btn:hover { background: rgba(255,255,255,0.1); }
-.n-back-btn svg { width: 24px; height: 24px; fill: #fff; }
+.n-back-btn svg { width: 20px; height: 20px; fill: #fff; }
 .n-close-btn {
-    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; color: #8b8f92; cursor: pointer; padding: 8px; border-radius: 50%;
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.05); border: none; color: #fff; cursor: pointer; padding: 8px; border-radius: 50%; transition: all 0.2s;
 }
 .n-close-btn:hover { background: rgba(255,255,255,0.1); }
-.n-close-btn svg { width: 24px; height: 24px; }
-.n-header-title { font-size: 17px; font-weight: 600; text-align: center; width: 100%; }
+.n-close-btn svg { width: 20px; height: 20px; }
+.n-header-title { font-size: 18px; font-weight: 600; text-align: center; width: 100%; letter-spacing: -0.5px; }
 
 .n-view {
-    display: none;
-    flex-direction: column;
-    padding-bottom: 20px;
+    display: none; flex-direction: column; padding-bottom: 40px;
 }
-.n-view.active { display: flex; animation: nSlideIn 0.2s cubic-bezier(0.25, 0.1, 0.25, 1); }
-@keyframes nSlideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+.n-view.active { display: flex; animation: nSlideIn 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); }
+@keyframes nSlideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
 
 .n-profile-header {
-    display: flex; flex-direction: column; align-items: center; padding: 32px 16px 24px;
-    background: #17212b; border-bottom: 1px solid #0e1621;
+    display: flex; flex-direction: column; align-items: center; padding: 40px 16px 30px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 .n-profile-icon {
-    width: 80px; height: 80px; border-radius: 50%; background: var(--accent);
-    display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
-    overflow: hidden;
+    width: 90px; height: 90px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+    overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.3); border: 3px solid rgba(255,255,255,0.1);
 }
 .n-profile-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-.n-profile-name { font-size: 20px; font-weight: 600; }
-.n-profile-status { font-size: 14px; color: #8b8f92; margin-top: 4px; }
+.n-profile-name { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+.n-profile-status { font-size: 14px; color: #8b8f92; margin-top: 6px; font-weight: 500; }
 
 .n-category-title {
-    font-size: 13px; font-weight: 500; color: #8b8f92; padding: 12px 12px 6px;
+    font-size: 13px; font-weight: 600; color: #8b8f92; padding: 24px 20px 10px; text-transform: uppercase; letter-spacing: 0.5px;
 }
-}
+
 .n-container {
-    background: #141414;
+    background: #101012;
     border-radius: 16px !important;
-    margin: 0 8px 8px;
+    margin: 0 16px 8px;
     overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
 }
-.n-container .n-item:first-child {
-    border-top-left-radius: 16px !important;
-    border-top-right-radius: 16px !important;
-}
-.n-container .n-item:last-child {
-    border-bottom-left-radius: 16px !important;
-    border-bottom-right-radius: 16px !important;
-}
-.n-container .n-item:only-child {
-    border-radius: 16px !important;
-}
+.n-container .n-item:first-child { border-top-left-radius: 16px !important; border-top-right-radius: 16px !important; }
+.n-container .n-item:last-child { border-bottom-left-radius: 16px !important; border-bottom-right-radius: 16px !important; }
+.n-container .n-item:only-child { border-radius: 16px !important; }
+
 .n-item {
-    cursor: pointer; padding: 10px 12px; display: flex; align-items: center;
-    background: #141414; border-bottom: 1px solid #1c1c1c; transition: background 0.2s;
+    cursor: pointer; padding: 14px 16px; display: flex; align-items: center;
+    background: transparent; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.2s;
 }
 .n-item:last-child { border-bottom: none; }
-.n-item:hover { background: #1a1a1a; }
+.n-item:hover { background: rgba(255,255,255,0.05); }
 .n-item-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-.n-text-block { display: flex; flex-direction: column; gap: 1px; flex: 1; padding-right: 12px; }
-.n-item-title { color: #fff; font-size: 15px; font-weight: 400; }
-.n-item-desc { color: #8b8f92; font-size: 12px; }
-.n-chevron { color: #8b8f92; opacity: 0.6; flex-shrink: 0; }
+.n-item-left { display: flex; align-items: center; flex: 1; padding-right: 12px; }
+.n-item-icon {
+    width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.05); margin-right: 14px; flex-shrink: 0; color: #a1a1aa;
+}
+.n-item-icon svg { width: 18px; height: 18px; }
+.n-text-block { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.n-item-title { color: #fff; font-size: 16px; font-weight: 500; }
+.n-item-desc { color: #8b8f92; font-size: 13px; }
+.n-chevron { color: #5c5c66; opacity: 0.8; flex-shrink: 0; }
 .n-chevron svg { width: 20px; height: 20px; }
 
-.n-settings { padding: 16px; background: #141414; margin: 0 8px; border-radius: 12px; margin-bottom: 8px; }
+.n-settings { padding: 16px; background: rgba(255,255,255,0.03); margin: 0 16px; border-radius: 16px; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.05); }
 .n-switch {
-    position: relative; width: 36px; height: 20px; background: #3b4a57;
-    border-radius: 10px; cursor: pointer; transition: background 0.3s; flex-shrink: 0;
+    position: relative; width: 44px; height: 26px; background: rgba(255,255,255,0.1);
+    border-radius: 13px; cursor: pointer; transition: background 0.3s; flex-shrink: 0;
 }
 .n-switch::after {
-    content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
-    background: #fff; border-radius: 50%; transition: transform 0.3s ease;
+    content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+    background: #fff; border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .n-switch.active { background: var(--accent); }
-.n-switch.active::after { transform: translateX(16px); }
+.n-switch.active::after { transform: translateX(18px); }
 
 .n-colored-nick {
     background-clip: text !important; -webkit-background-clip: text !important;
@@ -266,55 +266,44 @@ body.font-minecraft *:not(svg):not(.lucide):not(i) { font-family: 'Minecraft', s
 }
 @keyframes nGradientShift { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-.n-avatar-icon {
-    width: 20px; height: 20px; border-radius: 6px; object-fit: cover; margin-left: 2px;
-    vertical-align: middle; display: inline-block; border: 1px solid rgba(255,255,255,0.2);
-}
+.n-avatar-icon { width: 20px; height: 20px; border-radius: 6px; object-fit: cover; margin-left: 2px; vertical-align: middle; display: inline-block; border: 1px solid rgba(255,255,255,0.2); }
 .n-fake-star { width: 16px; height: 16px; margin-left: 2px; vertical-align: middle; display: inline-block; flex-shrink: 0; }
 
 .n-text-input {
-    width: 100%; height: 44px; padding: 0 12px; border: 1px solid #0e1621;
-    border-radius: 10px; outline: none; background: #17212b; color: #fff;
-    font-family: inherit; font-size: 15px; box-sizing: border-box; margin-bottom: 12px;
+    width: 100%; height: 48px; padding: 0 16px; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; outline: none; background: rgba(0,0,0,0.2); color: #fff;
+    font-family: inherit; font-size: 15px; box-sizing: border-box; margin-bottom: 12px; transition: border-color 0.2s;
 }
 .n-text-input:focus { border-color: var(--accent); }
+.n-text-input::placeholder { color: #5c5c66; }
 
 .n-color-row { display: flex; gap: 12px; align-items: center; }
 .n-color-row input[type="color"], #accentPicker {
-    width: 40px; height: 40px; padding: 0; border: 1px solid #3b4a57;
-    border-radius: 8px; background: transparent; overflow: hidden; cursor: pointer;
+    width: 44px; height: 44px; padding: 0; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; background: transparent; overflow: hidden; cursor: pointer;
 }
 .n-color-row input[type="color"]::-webkit-color-swatch-wrapper, #accentPicker::-webkit-color-swatch-wrapper { padding: 2px; }
-.n-color-row input[type="color"]::-webkit-color-swatch, #accentPicker::-webkit-color-swatch { border: 0; border-radius: 6px; }
+.n-color-row input[type="color"]::-webkit-color-swatch, #accentPicker::-webkit-color-swatch { border: 0; border-radius: 8px; }
 
 .n-palette { display: flex; gap: 12px; margin-top: 0; flex-wrap: wrap; }
 .n-circle {
-    width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
     border: 2px solid transparent; transition: transform 0.2s, border-color 0.2s;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .n-circle:hover { transform: scale(1.1); }
 .n-circle.selected { border-color: #fff; transform: scale(1.1); }
-.n-add-circle { background: #232e3c; color: #fff; }
-.n-add-circle svg { width: 16px; height: 16px; }
-#n-bg-preview { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #3b4a57; background: #000; flex-shrink: 0; }
+.n-add-circle { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+.n-add-circle svg { width: 18px; height: 18px; }
+#n-bg-preview { width: 60px; height: 40px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: #000; flex-shrink: 0; }
 
-.n-url-bg {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7); z-index: 999998; display: none;
-    align-items: center; justify-content: center;
-}
+.n-url-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 999998; display: none; align-items: center; justify-content: center; }
 .n-url-bg.open { display: flex; }
-.n-url-menu { background: #1c2733; padding: 20px; border-radius: 12px; width: 320px; box-sizing: border-box; color: #fff; }
-.n-url-input {
-    background: #17212b; border: 1px solid #0e1621; border-radius: 10px;
-    padding: 12px; color: #ccc; margin-bottom: 15px; outline: none; font-size: 15px; width: 100%; box-sizing: border-box;
-}
+.n-url-menu { background: #1c1c1e; padding: 24px; border-radius: 20px; width: 320px; box-sizing: border-box; color: #fff; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+.n-url-input { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; color: #ccc; margin-bottom: 16px; outline: none; font-size: 15px; width: 100%; box-sizing: border-box; }
 .n-url-input:focus { border-color: var(--accent); }
-.n-url-btn {
-    background: var(--accent); color: #fff; border: none; border-radius: 10px;
-    padding: 12px; font-weight: 600; cursor: pointer; width: 100%; font-size: 15px;
-}
+.n-url-btn { background: var(--accent); color: #fff; border: none; border-radius: 12px; padding: 14px; font-weight: 600; cursor: pointer; width: 100%; font-size: 15px; transition: filter 0.2s; }
+.n-url-btn:hover { filter: brightness(1.1); }
 
 html.n-bg-active { --tg-bg: transparent !important; }
 html.n-bg-active body { background: none !important; }
@@ -329,59 +318,20 @@ html.n-bg-active body > #n-nft-bg { display: block !important; }
 .px-4.pb-2.pt-4 { position: relative; overflow: hidden; }
 .px-4.pb-2.pt-4 > *:not(#linx-prof-bg-layer) { position: relative; z-index: 1; }
 
-
-
 nav.mb-\\[max\\(0\\.75rem\\,env\\(safe-area-inset-bottom\\)\\)\\] {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-bottom: 0 !important;
-
-
-    border-radius: 20px 20px 0 0 !important;
-
-
-    border-top: 0.5px solid rgba(255, 255, 255, 0.1) !important;
-    border-left: none !important;
-    border-right: none !important;
-    border-bottom: none !important;
-
-
-    background: rgba(20, 20, 20, 0.8) !important;
-    backdrop-filter: blur(25px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.3) !important;
-
-
-    padding-top: 8px !important;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom)) !important;
+    position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important;
+    width: 100% !important; max-width: 100% !important; margin-bottom: 0 !important;
+    border-radius: 20px 20px 0 0 !important; border-top: 0.5px solid rgba(255, 255, 255, 0.1) !important;
+    border-left: none !important; border-right: none !important; border-bottom: none !important;
+    background: rgba(20, 20, 20, 0.8) !important; backdrop-filter: blur(25px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(180%) !important; box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.3) !important;
+    padding-top: 8px !important; padding-bottom: calc(8px + env(safe-area-inset-bottom)) !important;
 }
-
-
 nav.mb-\\[max\\(0\\.75rem\\,env\\(safe-area-inset-bottom\\)\\)\\] a span.absolute.inset-0,
 nav.mb-\\[max\\(0\\.75rem\\,env\\(safe-area-inset-bottom\\)\\)\\] a.bg-white\\/10 {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border-radius: 0 !important;
+    background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-radius: 0 !important;
 }
-
-
-nav.mb-\\[max\\(0\\.75rem\\,env\\(safe-area-inset-bottom\\)\\)\\] a:active {
-    transform: scale(0.85) !important;
-    transition: transform 0.1s ease !important;
-}
-
-
-nav.mb-\\[max\\(0\\.75rem\\,env\\(safe-area-inset-bottom\\)\\)\\] svg {
-    transition: color 0.15s ease !important;
-}
-
 `;
-
 document.head.appendChild(nStyle);
 
 applyAccent(getSavedAccent());
@@ -429,20 +379,12 @@ const nMenuBtn = document.createElement('button');
 
 nMenuBtn.type = 'button';
 nMenuBtn.id = 'nMenuBtn';
-nMenuBtn.className = 'press relative inline-flex items-center justify-center text-sm transition disabled:cursor-not-allowed disabled:opacity-60 border text-zinc-50 h-9 rounded-full border-zinc-700 bg-transparent px-2.5 font-bold hover:bg-white/5';
-nMenuBtn.style.marginLeft = '0';
-nMenuBtn.style.marginTop = '8px';
-nMenuBtn.style.display = 'inline-flex';
-nMenuBtn.style.width = 'fit-content';
+nMenuBtn.setAttribute('aria-label', 'Открыть настройки LinxGram');
+nMenuBtn.className = 'grid size-10 shrink-0 place-items-center rounded-xl bg-white/[0.08] text-white transition hover:bg-white/[0.13] active:scale-95 ml-1';
 
 nMenuBtn.innerHTML = `
-    <span class="inline-flex items-center justify-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers size-4" aria-hidden="true">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-            <path d="M2 17l10 5 10-5"></path>
-            <path d="M2 12l10 5 10-5"></path>
-        </svg>
-    </span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layers size-[18px]" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+
 `;
 
 nMenuBtn.onclick = () => {
@@ -520,8 +462,8 @@ const nObserver = new MutationObserver(() => {
 
     if (editSpan && !document.getElementById('nMenuBtn')) {
         const parentBtn = editSpan.closest('button') || editSpan;
-        const toolbarRow = parentBtn.parentElement || parentBtn;
-        toolbarRow.insertAdjacentElement('afterend', nMenuBtn);
+        // Вставляем строго после кнопки редактирования
+        parentBtn.insertAdjacentElement('afterend', nMenuBtn);
     }
 });
 
@@ -529,6 +471,7 @@ nObserver.observe(document.body, {
     childList: true,
     subtree: true
 });
+
 
 const nPanel = document.createElement('div');
 
@@ -552,14 +495,19 @@ nPanel.innerHTML = `
                 <img src="https://i.postimg.cc/ZRjssLTp/file-0000000062dc820a8bbbc9a0e6f9f043.png" alt="LinxGram">
             </div>
             <div class="n-profile-name">LinxGram</div>
-            <div class="n-profile-status">Модификация UnixGram • v0.3.3</div>
+            <div class="n-profile-status">Модификация UnixGram • v0.3.4</div>
         </div>
 
         <div class="n-category-title">Внешний вид</div>
         <div class="n-container">
             <div class="n-item" data-target="appearance">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Внешний вид приложения</span><span class="n-item-desc">Акцент, шрифты, фон</span></div>
+                    <div class="n-item-left">
+                        <div class="n-item-icon" style="background: rgba(255, 99, 132, 0.15); color: rgb(255, 99, 132);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"></circle><circle cx="17.5" cy="10.5" r=".5"></circle><circle cx="8.5" cy="7.5" r=".5"></circle><circle cx="6.5" cy="12.5" r=".5"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>
+                        </div>
+                        <div class="n-text-block"><span class="n-item-title">Внешний вид</span><span class="n-item-desc">Акцент, шрифты, фон</span></div>
+                    </div>
                     <div class="n-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                 </div>
             </div>
@@ -569,13 +517,23 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" data-target="profile">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Фон профиля</span><span class="n-item-desc">Кастомизация страницы профиля</span></div>
+                    <div class="n-item-left">
+                        <div class="n-item-icon" style="background: rgba(45, 140, 255, 0.15); color: rgb(45, 140, 255);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+                        </div>
+                        <div class="n-text-block"><span class="n-item-title">Фон профиля</span><span class="n-item-desc">Кастомизация страницы</span></div>
+                    </div>
                     <div class="n-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                 </div>
             </div>
             <div class="n-item" data-target="nick">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Ник и эффекты</span><span class="n-item-desc">Цвета, бейджи, звезды</span></div>
+                    <div class="n-item-left">
+                        <div class="n-item-icon" style="background: rgba(255, 215, 0, 0.15); color: rgb(255, 215, 0);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>
+                        </div>
+                        <div class="n-text-block"><span class="n-item-title">Ник и эффекты</span><span class="n-item-desc">Цвета, бейджи, номер</span></div>
+                    </div>
                     <div class="n-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                 </div>
             </div>
@@ -585,13 +543,23 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" data-target="effects">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Развлечения и Эффекты</span><span class="n-item-desc">Интерактивные элементы</span></div>
+                    <div class="n-item-left">
+                        <div class="n-item-icon" style="background: rgba(168, 85, 247, 0.15); color: rgb(168, 85, 247);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        </div>
+                        <div class="n-text-block"><span class="n-item-title">Развлечения</span><span class="n-item-desc">Интерактивные элементы</span></div>
+                    </div>
                     <div class="n-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                 </div>
             </div>
             <div class="n-item" data-target="system">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Система</span><span class="n-item-desc">Оптимизация и производительность</span></div>
+                    <div class="n-item-left">
+                        <div class="n-item-icon" style="background: rgba(255, 255, 255, 0.08); color: #a1a1aa;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+                        </div>
+                        <div class="n-text-block"><span class="n-item-title">Система</span><span class="n-item-desc">Оптимизация</span></div>
+                    </div>
                     <div class="n-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
                 </div>
             </div>
@@ -603,7 +571,9 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" style="cursor:default;">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Акцентный цвет</span><span class="n-item-desc">Цвет акцента по всему приложению</span></div>
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Акцентный цвет</span><span class="n-item-desc">Цвет акцента по всему приложению</span></div>
+                    </div>
                     <input type="color" id="accentPicker" value="${getSavedAccent()}">
                 </div>
             </div>
@@ -624,7 +594,9 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" id="bgItem" style="cursor:default;">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Включить фон</span><span class="n-item-desc">Смена фона всего сайта</span></div>
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Включить фон</span><span class="n-item-desc">Смена фона всего сайта</span></div>
+                    </div>
                     <div class="n-switch" id="bgToggle"></div>
                 </div>
             </div>
@@ -648,7 +620,9 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" id="profBgItem" style="cursor:default;">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Включить фон профиля</span><span class="n-item-desc">Загрузить картинку</span></div>
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Включить фон профиля</span><span class="n-item-desc">Загрузить картинку</span></div>
+                    </div>
                     <div class="n-switch" id="profBgToggle"></div>
                 </div>
             </div>
@@ -662,7 +636,7 @@ nPanel.innerHTML = `
     </div>
 
     <div class="n-view" data-view="nick">
-                <div class="n-category-title">Никнейм</div>
+        <div class="n-category-title">Никнейм</div>
         <div class="n-settings" style="margin-top:0;">
             <input type="text" class="n-text-input" id="nickInput" placeholder="Загрузка..." style="margin-bottom: 0;" disabled readonly>
         </div>
@@ -671,7 +645,9 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" id="nickColorItem" style="cursor:default;">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Цветной ник</span><span class="n-item-desc">Градиентный цвет никнейма</span></div>
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Цветной ник</span><span class="n-item-desc">Градиентный цвет никнейма</span></div>
+                    </div>
                     <div class="n-switch" id="nickToggle"></div>
                 </div>
             </div>
@@ -686,16 +662,31 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" id="badgeItem" style="cursor:default;">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Бейдж</span><span class="n-item-desc">Значок рядом с ником</span></div>
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Бейдж</span><span class="n-item-desc">Значок рядом с ником</span></div>
+                    </div>
                     <div class="n-switch" id="badgeToggle"></div>
                 </div>
             </div>
             <div class="n-item" id="starItem" style="cursor:default;">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Visual Premium</span><span class="n-item-desc">Звезда рядом с ником</span></div>
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Visual Premium</span><span class="n-item-desc">Звезда рядом с ником</span></div>
+                    </div>
                     <div class="n-switch" id="starToggle"></div>
                 </div>
             </div>
+            <div class="n-item" id="anonItem" style="cursor:default;">
+                <div class="n-item-content">
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Анонимный номер</span><span class="n-item-desc">Показывать визуальный номер</span></div>
+                    </div>
+                    <div class="n-switch" id="anonToggle"></div>
+                </div>
+            </div>
+        </div>
+        <div class="n-settings">
+            <input type="text" class="n-text-input" id="anonInput" placeholder="+888 0000 0001" style="margin-bottom: 0;">
         </div>
     </div>
 
@@ -704,7 +695,9 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" id="cubItem" style="cursor:default;">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Visual Cub</span><span class="n-item-desc">Интерактивные 2D кубы</span></div>
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Visual Cub</span><span class="n-item-desc">Интерактивные 2D кубы</span></div>
+                    </div>
                     <div class="n-switch" id="cubToggle"></div>
                 </div>
             </div>
@@ -716,7 +709,9 @@ nPanel.innerHTML = `
         <div class="n-container">
             <div class="n-item" id="optItem" style="cursor:default;">
                 <div class="n-item-content">
-                    <div class="n-text-block"><span class="n-item-title">Optimization</span><span class="n-item-desc">Очистка кэша и ускорение</span></div>
+                    <div class="n-item-left">
+                        <div class="n-text-block"><span class="n-item-title">Optimization</span><span class="n-item-desc">Очистка кэша и ускорение</span></div>
+                    </div>
                     <div class="n-switch" id="optToggle"></div>
                 </div>
             </div>
@@ -764,10 +759,12 @@ function saveNickSettings() {
         starEnabled: document.getElementById('starToggle').classList.contains('active'),
         nick: document.getElementById('nickInput').value.trim(),
         c1: document.getElementById('nickColor1').value,
-        c2: document.getElementById('nickColor2').value
+        c2: document.getElementById('nickColor2').value,
+        anonEnabled: document.getElementById('anonToggle').classList.contains('active'),
+        anonNumber: document.getElementById('anonInput').value.trim() || '+888 0000 0001'
     };
 
-    localStorage.setItem('n_nick_settings', JSON.stringify(s));
+        localStorage.setItem('n_nick_settings', JSON.stringify(s));
 }
 
 function loadNickSettings() {
@@ -777,19 +774,13 @@ function loadNickSettings() {
     document.getElementById('nickColor1').value = s.c1 || '#4caf50';
     document.getElementById('nickColor2').value = s.c2 || '#ffffff';
 
-    if (s.colorEnabled) {
-        document.getElementById('nickToggle').classList.add('active');
-    }
+    document.getElementById('anonInput').value = s.anonNumber || '+888 0000 0001';
 
-    if (s.badgeEnabled) {
-        document.getElementById('badgeToggle').classList.add('active');
-    }
-
-    if (s.starEnabled) {
-        document.getElementById('starToggle').classList.add('active');
-    }
+    if (s.colorEnabled) document.getElementById('nickToggle').classList.add('active');
+    if (s.badgeEnabled) document.getElementById('badgeToggle').classList.add('active');
+    if (s.starEnabled) document.getElementById('starToggle').classList.add('active');
+    if (s.anonEnabled) document.getElementById('anonToggle').classList.add('active');
 }
-
 let linxOrigNick = null;
 
 function fetchLinxOrigNick() {
@@ -833,7 +824,6 @@ function applyNickEffects() {
         if (isMatch && s.colorEnabled) {
             const c1 = s.c1 || '#4caf50';
             const c2 = s.c2 || '#ffffff';
-
             el.style.background = `linear-gradient(90deg, ${c1}, ${c2}, ${c1})`;
             el.classList.add('n-colored-nick');
         } else {
@@ -845,55 +835,72 @@ function applyNickEffects() {
         }
 
         const badge = el.parentNode
-            ? Array.from(el.parentNode.children).find(
-                c => c.classList &&
-                c.classList.contains('n-avatar-icon') &&
-                c.dataset.linxBadge === 'true'
-            )
+            ? Array.from(el.parentNode.children).find(c => c.classList && c.classList.contains('n-avatar-icon') && c.dataset.linxBadge === 'true')
             : null;
 
         if (isMatch && s.badgeEnabled) {
             if (!badge) {
                 const newBadge = document.createElement('img');
-
-                newBadge.src =
-                    'https://i.postimg.cc/ZRjssLTp/file-0000000062dc820a8bbbc9a0e6f9f043.png';
-
+                newBadge.src = 'https://i.postimg.cc/ZRjssLTp/file-0000000062dc820a8bbbc9a0e6f9f043.png';
                 newBadge.className = 'n-avatar-icon';
                 newBadge.dataset.linxBadge = 'true';
-
                 el.after(newBadge);
             }
         } else {
-            if (badge) {
-                badge.remove();
-            }
+            if (badge) badge.remove();
         }
 
-        const star = el.parentNode
-            ? el.parentNode.querySelector('.n-fake-star')
-            : null;
+        const star = el.parentNode ? el.parentNode.querySelector('.n-fake-star') : null;
 
         if (isMatch && s.starEnabled) {
             const starColor = s.c1 || '#4caf50';
-
             if (star) {
                 const path = star.querySelector('path');
-
-                if (path) {
-                    path.setAttribute('fill', starColor);
-                }
+                if (path) path.setAttribute('fill', starColor);
             } else {
                 el.insertAdjacentHTML('afterend', starIcon(starColor));
             }
-
             el.dataset.linxStar = 'true';
         } else {
-            if (star && el.dataset.linxStar) {
-                star.remove();
-            }
-
+            if (star && el.dataset.linxStar) star.remove();
             delete el.dataset.linxStar;
+        }
+
+        // --- Логика анонимного номера ---
+        let existingAnonBtn = document.querySelector('.n-anon-btn');
+
+        if (isMatch && s.anonEnabled) {
+            const num = s.anonNumber || '+888 0000 0001';
+            const alsoSpan = Array.from(document.querySelectorAll('span')).find(s => s.textContent.includes('а также'));
+            const statusP = Array.from(document.querySelectorAll('p')).find(p => p.textContent.includes('в сети'));
+
+            if (!existingAnonBtn) {
+                const newAnonBtn = document.createElement('button');
+                newAnonBtn.type = 'button';
+                newAnonBtn.className = 'n-anon-btn mt-1 -mx-1 flex w-fit items-center gap-1.5 rounded-md px-1 text-sm text-zinc-500 transition hover:text-zinc-300 active:scale-95';
+                newAnonBtn.setAttribute('aria-label', 'Скопировать анонимный номер');
+                newAnonBtn.innerHTML = `
+                    <span class="text-zinc-400">Анонимный номер</span>
+                    <span class="font-medium" style="color: color-mix(in oklab, rgb(45, 140, 255) 82%, white);">${num}</span>
+                `;
+
+                if (alsoSpan) {
+                    alsoSpan.parentNode.insertBefore(newAnonBtn, alsoSpan);
+                } else if (statusP) {
+                    statusP.insertAdjacentElement('afterend', newAnonBtn);
+                }
+            } else {
+                const numSpan = existingAnonBtn.querySelector('.font-medium');
+                if (numSpan) numSpan.textContent = num;
+
+                if (alsoSpan && existingAnonBtn.nextElementSibling !== alsoSpan) {
+                    alsoSpan.parentNode.insertBefore(existingAnonBtn, alsoSpan);
+                } else if (statusP && existingAnonBtn.previousElementSibling !== statusP) {
+                    statusP.insertAdjacentElement('afterend', existingAnonBtn);
+                }
+            }
+        } else {
+            if (existingAnonBtn) existingAnonBtn.remove();
         }
     });
 }
@@ -1182,6 +1189,19 @@ function initLinxGramEvents() {
         saveNickSettings();
         applyNickEffects();
     };
+
+
+        document.getElementById('anonToggle').onclick = function(e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+        saveNickSettings();
+        applyNickEffects();
+    };
+
+    document.getElementById('anonInput').addEventListener('input', () => {
+        saveNickSettings();
+        applyNickEffects();
+    });
 
     document.getElementById('nickInput').addEventListener('input', () => {
         saveNickSettings();
